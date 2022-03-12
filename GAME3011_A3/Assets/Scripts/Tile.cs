@@ -14,15 +14,18 @@ public enum TileType
     Yellow
 }
 
-public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public bool selected;
     public TileType type;
     CanvasGroup canvasGroup;
 
+    RectTransform rectTransform;
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        rectTransform = GetComponent<RectTransform>();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -35,5 +38,32 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         selected = false;
         canvasGroup.blocksRaycasts = true;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if(Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y))
+        {
+            if (eventData.delta.x < 0)
+            {
+                print("swipe left");
+            }
+            else if (eventData.delta.x > 0)
+            {
+                print("swipe right");
+            }
+        }
+
+        else if(Mathf.Abs(eventData.delta.y) > Mathf.Abs(eventData.delta.x))
+        {
+            if (eventData.delta.y < 0)
+            {
+                print("swipe down");
+            }
+            else if (eventData.delta.y > 0)
+            {
+                print("swipe up");
+            }
+        }
     }
 }

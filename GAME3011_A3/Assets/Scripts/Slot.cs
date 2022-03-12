@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Slot : MonoBehaviour
+public class Slot : MonoBehaviour, IDropHandler
 {
     public Tile tile;
     public List<Tile> tileList;
@@ -22,5 +23,13 @@ public class Slot : MonoBehaviour
         int random = Random.Range(0, tileList.Count);
         Tile newItem = Instantiate(tileList[random], transform.position, Quaternion.identity, transform);
         print(random);
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        if (eventData.pointerDrag != null)
+        {
+            eventData.pointerDrag.gameObject.transform.position = transform.position;
+        }
     }
 }
