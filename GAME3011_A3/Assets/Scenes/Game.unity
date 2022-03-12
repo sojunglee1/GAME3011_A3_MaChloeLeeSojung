@@ -2915,16 +2915,6 @@ MonoBehaviour:
   gameBoard: {fileID: 1127119560}
   slot: {fileID: 4435736063027806648, guid: 837e6657ca2a9fc4ba5d0640f4db2958, type: 3}
   slotList: []
-  tile: {fileID: 6974331380816487315, guid: efb4a6110b8146e44be100477917a3f7, type: 3}
-  tileList: []
-  tileSprites:
-  - {fileID: 21300000, guid: af1a5a0fe0fa98c40827b6ec06676ac1, type: 3}
-  - {fileID: 21300000, guid: 7f71e024d9332c74a8d06cc9867f279b, type: 3}
-  - {fileID: 21300000, guid: 31178a648b1d4e74aab31f1b12e993c2, type: 3}
-  - {fileID: 21300000, guid: 08b7274c33e7c334fa9bdfdb8f6656d5, type: 3}
-  - {fileID: 21300000, guid: 0c650e9a914ac1d4b814ff43b10a014a, type: 3}
-  - {fileID: 21300000, guid: 8d9d26032c946d949a741e51ed74d475, type: 3}
-  - {fileID: 21300000, guid: aaccdc8df56f64345983e68352f3c6be, type: 3}
 --- !u!114 &1973991489
 MonoBehaviour:
   m_ObjectHideFlags: 0

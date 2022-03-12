@@ -13,17 +13,13 @@ public class GameManager : MonoBehaviour
     public GameObject slot;
     public List<Slot> slotList;
 
-    public GameObject tile;
-    public List<Tile> tileList;
-    public List<Sprite> tileSprites;
+    //public GameObject tile;
+    //public List<Tile> tileList;
 
     [System.Obsolete]
     private void Start()
     {
-        Random.seed = Random.Range(0, 100);
-
         CreateGameBoard();
-        CreateItems();
     }
 
     public void CreateGameBoard()
@@ -44,23 +40,5 @@ public class GameManager : MonoBehaviour
                 slotList.Add(newSlot.GetComponent<Slot>());
             }
         }
-    }
-
-    public void CreateItems()
-    {
-        
-        for (int i = 0; i < slotList.Count; i++)
-        {
-            var newItem = Instantiate(tile, slotList[i].transform.position, Quaternion.identity, slotList[i].transform);
-            RandomSprite(newItem.GetComponent<Tile>());
-            tileList.Add(newItem.GetComponent<Tile>());
-        }
-        print(slotList.Count);
-    }
-
-    public void RandomSprite(Tile tile)
-    {
-        int randomizeItems = Random.Range(0, tileSprites.Count - 1);
-        tile.SetImage(tileSprites[randomizeItems]);
     }
 }
