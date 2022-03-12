@@ -14,16 +14,16 @@ public class GameManager : MonoBehaviour
     public List<Slot> slotList;
 
     public GameObject tile;
-    public List<Image> tileSprites;
+    public List<Tile> tileList;
+    public List<Sprite> tileSprites;
 
     [System.Obsolete]
     private void Start()
     {
-        CreateGameBoard();
         Random.seed = 42;
 
-        
-
+        CreateGameBoard();
+        CreateItems();
     }
 
     public void CreateGameBoard()
@@ -34,9 +34,9 @@ public class GameManager : MonoBehaviour
         float itemWidth = slot.GetComponent<RectTransform>().rect.width;
         float itemHeight = slot.GetComponent<RectTransform>().rect.height;
 
-        for (float i = -boardWidth/2; i <= boardWidth / 2; i++)
+        for (float i = -boardWidth / 2; i < boardWidth / 2; i++)
         {
-            for (int j = -boardHeight/2; j <= boardHeight/2; j++)
+            for (int j = -boardHeight / 2; j < boardHeight / 2; j++)
             {
                 Vector3 pos = new Vector3(centerX - (i * itemWidth), centerY - (j * itemHeight), 0);
                 var newSlot = Instantiate(slot, pos, Quaternion.identity, gameBoard.transform);
@@ -46,12 +46,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RandomItems()
+    public void CreateItems()
     {
-        int randomizeItems = Random.Range(0, tileSprites.Count);
-        for(int i = 0; i < slotList.Count; i++)
+        
+        for (int i = 0; i < slotList.Count; i++)
         {
-               
+            var newItem = Instantiate(tile, slotList[i].transform.position, Quaternion.identity, slotList[i].transform);
+            RandomSprite(newItem.GetComponent<Tile>());
+            tileList.Add(newItem.GetComponent<Tile>());
         }
+        print(slotList.Count);
+    }
+
+    public void RandomSprite(Tile tile)
+    {
+        int randomizeItems = Random.Range(0, tileSprites.Count - 1);
+        tile.SetImage(tileSprites[randomizeItems]);
     }
 }

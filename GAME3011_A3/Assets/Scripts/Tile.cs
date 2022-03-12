@@ -7,12 +7,18 @@ using UnityEngine.EventSystems;
 public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public bool selected;
-    public Image tileSprite;
+    Image tileSprite;
     CanvasGroup canvasGroup;
 
-    private void Start()
+    private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        tileSprite = GetComponent<Image>();
+    }
+
+    public void SetImage(Sprite newImage)
+    {
+        tileSprite.sprite = newImage;
     }
 
     public void OnPointerDown(PointerEventData eventData)
