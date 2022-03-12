@@ -57,12 +57,10 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             if (eventData.delta.x < 0)
             {
-                print("swipe left");
                 movement = TileMovement.Left;
             }
             else if (eventData.delta.x > 0)
             {
-                print("swipe right");
                 movement = TileMovement.Right;
             }
         }
@@ -71,12 +69,10 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             if (eventData.delta.y < 0)
             {
-                print("swipe down");
                 movement = TileMovement.Down;
             }
             else if (eventData.delta.y > 0)
             {
-                print("swipe up");
                 movement = TileMovement.Up;
             }
         }
@@ -90,6 +86,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public void CancelMove()
     {
         move = false;
+    }
+
+    public void ResetMove()
+    {
+        move = true;
     }
 
     public void RemoveParent()

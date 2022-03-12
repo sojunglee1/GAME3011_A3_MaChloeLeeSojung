@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject gameBoard;
 
-    public GameObject slot;
+    public Slot slot;
     public List<Slot> slotList;
 
     //public GameObject tile;
@@ -30,13 +30,13 @@ public class GameManager : MonoBehaviour
         float itemWidth = slot.GetComponent<RectTransform>().rect.width;
         float itemHeight = slot.GetComponent<RectTransform>().rect.height;
 
-        for (float i = -boardWidth / 2; i < boardWidth / 2; i++)
+        for (float x =  0; x < boardWidth; x++)
         {
-            for (int j = -boardHeight / 2; j < boardHeight / 2; j++)
+            for (int y = 0; y < boardHeight; y++)
             {
-                Vector3 pos = new Vector3(centerX - (i * itemWidth), centerY - (j * itemHeight), 0);
+                Vector3 pos = new Vector3((centerX - (x - boardWidth / 2) * itemWidth), (centerY - (y - boardHeight / 2) * itemHeight), 0);
                 var newSlot = Instantiate(slot, pos, Quaternion.identity, gameBoard.transform);
-
+                newSlot.SetID(new Vector2(x, y));
                 slotList.Add(newSlot.GetComponent<Slot>());
             }
         }
