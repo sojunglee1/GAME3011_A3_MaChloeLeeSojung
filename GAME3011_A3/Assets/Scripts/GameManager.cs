@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [System.Obsolete]
     private void Start()
     {
-        Random.seed = 42;
+        Random.seed = Random.Range(0, 100);
 
         CreateGameBoard();
         CreateItems();
