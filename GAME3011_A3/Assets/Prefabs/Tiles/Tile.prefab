@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6974331380816487313}
   - component: {fileID: 2984483414091046205}
   - component: {fileID: 4201423110179409048}
+  - component: {fileID: 6983289551319934296}
   m_Layer: 5
   m_Name: Tile
   m_TagString: Untagged
@@ -134,13 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selected: 0
-  tileSprites:
-  - {fileID: 21300000, guid: 7f71e024d9332c74a8d06cc9867f279b, type: 3}
-  - {fileID: 21300000, guid: 31178a648b1d4e74aab31f1b12e993c2, type: 3}
-  - {fileID: 21300000, guid: 08b7274c33e7c334fa9bdfdb8f6656d5, type: 3}
-  - {fileID: 21300000, guid: 0c650e9a914ac1d4b814ff43b10a014a, type: 3}
-  - {fileID: 21300000, guid: aaccdc8df56f64345983e68352f3c6be, type: 3}
-  - {fileID: 21300000, guid: 8d9d26032c946d949a741e51ed74d475, type: 3}
+  type: 0
+  movement: 0
 --- !u!225 &4201423110179409048
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -153,3 +149,22 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!95 &6983289551319934296
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6974331380816487315}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 63fef2b79bbf3ab488c503d11822be92, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

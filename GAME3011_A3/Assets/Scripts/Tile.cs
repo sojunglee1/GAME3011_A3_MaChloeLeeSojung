@@ -32,11 +32,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     RectTransform rectTransform;
     bool move = true;
+    Animator animator;
 
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         rectTransform = GetComponent<RectTransform>();
+        animator = GetComponent<Animator>();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -49,33 +51,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
         selected = false;
         canvasGroup.blocksRaycasts = true;
+
+        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(Mathf.Abs(eventData.delta.x) > Mathf.Abs(eventData.delta.y))
-        {
-            if (eventData.delta.x < 0)
-            {
-                movement = TileMovement.Left;
-            }
-            else if (eventData.delta.x > 0)
-            {
-                movement = TileMovement.Right;
-            }
-        }
 
-        else if(Mathf.Abs(eventData.delta.y) > Mathf.Abs(eventData.delta.x))
-        {
-            if (eventData.delta.y < 0)
-            {
-                movement = TileMovement.Down;
-            }
-            else if (eventData.delta.y > 0)
-            {
-                movement = TileMovement.Up;
-            }
-        }
     }
 
     public bool CanMove()
@@ -95,12 +77,30 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public void RemoveParent()
     {
-        transform.parent = transform.parent.parent;
+        transform.SetParent(transform.parent.parent);
     }
 
     public void SetParent(Transform parent)
     {
-        transform.parent = parent;
-        transform.position = parent.position;
+        transform.SetParent(parent);
+    }
+
+    public void PlayAnimation(TileMovement movement)
+    {
+        switch(movement)
+        {
+            case TileMovement.Right:
+                animator.Play("MoveRight");
+                break;
+            case TileMovement.Left:
+                animator.Play("MoveLeft");
+                break;
+            case TileMovement.Up:
+                animator.Play("MoveUp");
+                break;
+            case TileMovement.Down:
+                animator.Play("MoveDown");
+                break;
+        }
     }
 }

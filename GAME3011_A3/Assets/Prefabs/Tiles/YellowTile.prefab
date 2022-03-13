@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8715874332128342035}
   - component: {fileID: 3555538222826671807}
   - component: {fileID: 2482249727228583706}
+  - component: {fileID: 7691842635760523627}
   m_Layer: 5
   m_Name: YellowTile
   m_TagString: Untagged
@@ -135,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selected: 0
   type: 5
+  movement: 0
 --- !u!225 &2482249727228583706
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -147,3 +149,22 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!95 &7691842635760523627
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8715874332128342033}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 63fef2b79bbf3ab488c503d11822be92, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

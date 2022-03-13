@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6186124612268902250}
   - component: {fileID: 2052314478578170310}
   - component: {fileID: 1107391759977523299}
+  - component: {fileID: 6698166834401423746}
   m_Layer: 5
   m_Name: BlueTile
   m_TagString: Untagged
@@ -135,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selected: 0
   type: 0
+  movement: 0
 --- !u!225 &1107391759977523299
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -147,3 +149,22 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!95 &6698166834401423746
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6186124612268902248}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 63fef2b79bbf3ab488c503d11822be92, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -82,6 +82,30 @@ public class Slot : MonoBehaviour, IDropHandler
 
         if (x || y)
         {
+            if ((currentID.y.Equals(adjacentID.y) && (currentID.x + 1).Equals(adjacentID.x)))
+            {
+                currentTile.PlayAnimation(TileMovement.Left);
+                adjacentTile.PlayAnimation(TileMovement.Right);
+                print("play animator");
+            }
+            else if ((currentID.y.Equals(adjacentID.y) && (currentID.x - 1).Equals(adjacentID.x)))
+            {
+                currentTile.PlayAnimation(TileMovement.Right);
+                adjacentTile.PlayAnimation(TileMovement.Left);
+                print("play animator");
+            }
+            else if ((currentID.x.Equals(adjacentID.x) && (currentID.y + 1).Equals(adjacentID.y)))
+            {
+                currentTile.PlayAnimation(TileMovement.Down);
+                adjacentTile.PlayAnimation(TileMovement.Up);
+                print("play animator");
+            }
+            else if ((currentID.x.Equals(adjacentID.x) && (currentID.y - 1).Equals(adjacentID.y)))
+            {
+                currentTile.PlayAnimation(TileMovement.Up);
+                adjacentTile.PlayAnimation(TileMovement.Down);
+                print("play animator");
+            }
             return true;
         }
         else return false;
