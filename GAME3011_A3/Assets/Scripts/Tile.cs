@@ -29,15 +29,24 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public TileType type;
     public TileMovement movement;
     CanvasGroup canvasGroup;
-
-    RectTransform rectTransform;
-    bool move = true;
+    Canvas canvas;
     Animator animator;
+
+    public bool OverrideSorting
+    {
+        get { return canvas.overrideSorting; }
+        set { canvas.overrideSorting = value; }
+    }
+    public int SortingOrder
+    {
+        get { return canvas.sortingOrder; }
+        set { canvas.sortingOrder = value; }
+    }
 
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        rectTransform = GetComponent<RectTransform>();
+        canvas = GetComponent<Canvas>();
         animator = GetComponent<Animator>();
     }
 
@@ -45,34 +54,19 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
         selected = true;
         canvasGroup.blocksRaycasts = false;
+
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         selected = false;
         canvasGroup.blocksRaycasts = true;
-
-        
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public void OnDrag(PointerEventData eventData) 
     {
-
-    }
-
-    public bool CanMove()
-    {
-        return move;
-    }
-
-    public void CancelMove()
-    {
-        move = false;
-    }
-
-    public void ResetMove()
-    {
-        move = true;
+        OverrideSorting = true;
+        SortingOrder = 1;
     }
 
     public void RemoveParent()
@@ -87,7 +81,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public void PlayAnimation(TileMovement movement)
     {
-        switch(movement)
+        switch (movement)
         {
             case TileMovement.Right:
                 animator.Play("MoveRight");

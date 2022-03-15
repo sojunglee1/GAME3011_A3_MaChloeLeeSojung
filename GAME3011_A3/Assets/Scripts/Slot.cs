@@ -30,21 +30,11 @@ public class Slot : MonoBehaviour, IDropHandler
     {
         if (eventData.pointerDrag != null)
         {
-            if (CanSwitchTiles(eventData))
+            if (transform.childCount.Equals(1))
             {
                 SwitchTiles(eventData);
             }
         }
-    }
-
-    public bool CanSwitchTiles(PointerEventData eventData)
-    {
-        bool move = false;
-        if (transform.childCount.Equals(1) && eventData.pointerDrag.gameObject.GetComponent<Tile>().CanMove())
-        {
-            move = true;
-        }
-        return move;
     }
 
     public void SwitchTiles(PointerEventData eventData)
@@ -57,6 +47,7 @@ public class Slot : MonoBehaviour, IDropHandler
 
         if (AdjacentTile(tile2, tile1))
         {
+
             tile1.SetParent(tile2Parent);
             tile2.SetParent(tile1Parent);
         }
@@ -86,26 +77,27 @@ public class Slot : MonoBehaviour, IDropHandler
             {
                 currentTile.PlayAnimation(TileMovement.Left);
                 adjacentTile.PlayAnimation(TileMovement.Right);
-                print("play animator");
+
             }
             else if ((currentID.y.Equals(adjacentID.y) && (currentID.x - 1).Equals(adjacentID.x)))
             {
                 currentTile.PlayAnimation(TileMovement.Right);
                 adjacentTile.PlayAnimation(TileMovement.Left);
-                print("play animator");
             }
             else if ((currentID.x.Equals(adjacentID.x) && (currentID.y + 1).Equals(adjacentID.y)))
             {
                 currentTile.PlayAnimation(TileMovement.Down);
                 adjacentTile.PlayAnimation(TileMovement.Up);
-                print("play animator");
             }
             else if ((currentID.x.Equals(adjacentID.x) && (currentID.y - 1).Equals(adjacentID.y)))
             {
                 currentTile.PlayAnimation(TileMovement.Up);
                 adjacentTile.PlayAnimation(TileMovement.Down);
-                print("play animator");
             }
+
+            currentTile.OverrideSorting = false;
+            currentTile.SortingOrder = 0;
+
             return true;
         }
         else return false;
