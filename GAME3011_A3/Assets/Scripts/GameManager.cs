@@ -44,10 +44,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        foreach (Slot slot in slotList)
-        {
-            CheckMatch(slot);
-        }
+        //foreach (Slot slot in slotList)
+        //{
+        //    CheckMatch(slot);
+        //}
     }
 
     public void Print()

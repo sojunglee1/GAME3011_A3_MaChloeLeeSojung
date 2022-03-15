@@ -24,7 +24,6 @@ public class Slot : MonoBehaviour, IDropHandler
     public void CreateTile()
     {
         int random = Random.Range(0, tileList.Count);
-        print(random);
         var newTile = Instantiate(tileList[random], transform.position, Quaternion.identity, transform);
         tile = newTile;
     }
@@ -33,24 +32,24 @@ public class Slot : MonoBehaviour, IDropHandler
     {
         if (eventData.pointerDrag != null)
         {
-            if (tile != null)
+            if (transform.childCount.Equals(1))
             {
                 SwitchTiles(eventData);
             }
+            
         }
     }
 
     public void SwitchTiles(PointerEventData eventData)
     {
         Tile tile1 = eventData.pointerDrag.GetComponent<Tile>();
-        Tile tile2 = tile;
+        Tile tile2 = transform.GetChild(0).GetComponent<Tile>();
 
         Transform tile1Parent = eventData.pointerDrag.gameObject.GetComponent<Tile>().transform.parent;
         Transform tile2Parent = this.transform; 
 
         if (AdjacentTile(tile2, tile1))
         {
-
             tile1.SetParent(tile2Parent);
             tile2.SetParent(tile1Parent);
         }
