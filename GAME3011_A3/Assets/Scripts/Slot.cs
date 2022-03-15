@@ -9,28 +9,31 @@ public class Slot : MonoBehaviour, IDropHandler
     public List<Tile> tileList;
 
     public Vector2 id;
-
-    private void Awake()
+    public Vector2 ID
     {
-        Random.seed = Random.Range(0, 100);
+        get { return id; }
+        set { id = value; }
     }
 
+    [System.Obsolete]
     private void Start()
     {
-        CreateTile();
+        Random.seed = Random.Range(0, 100);
     }
 
     public void CreateTile()
     {
         int random = Random.Range(0, tileList.Count);
-        Tile newItem = Instantiate(tileList[random], transform.position, Quaternion.identity, transform);
+        print(random);
+        var newTile = Instantiate(tileList[random], transform.position, Quaternion.identity, transform);
+        tile = newTile;
     }
 
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag != null)
         {
-            if (transform.childCount.Equals(1))
+            if (tile != null)
             {
                 SwitchTiles(eventData);
             }
@@ -40,7 +43,7 @@ public class Slot : MonoBehaviour, IDropHandler
     public void SwitchTiles(PointerEventData eventData)
     {
         Tile tile1 = eventData.pointerDrag.GetComponent<Tile>();
-        Tile tile2 = transform.GetChild(0).GetComponent<Tile>();
+        Tile tile2 = tile;
 
         Transform tile1Parent = eventData.pointerDrag.gameObject.GetComponent<Tile>().transform.parent;
         Transform tile2Parent = this.transform; 
@@ -52,21 +55,11 @@ public class Slot : MonoBehaviour, IDropHandler
             tile2.SetParent(tile1Parent);
         }
     }
-    
-    public void SetID(Vector2 id)
-    {
-        this.id = id;
-    }
-
-    public Vector2 GetID()
-    {
-        return id;
-    }
 
     public bool AdjacentTile(Tile currentTile, Tile adjacentTile)
     {
-        Vector2 currentID = currentTile.transform.parent.GetComponent<Slot>().GetID();
-        Vector2 adjacentID = adjacentTile.transform.parent.GetComponent<Slot>().GetID();
+        Vector2 currentID = currentTile.transform.parent.GetComponent<Slot>().ID;
+        Vector2 adjacentID = adjacentTile.transform.parent.GetComponent<Slot>().ID;
 
         bool x = ((currentID.x + 1).Equals(adjacentID.x) || (currentID.x - 1).Equals(adjacentID.x)) && (currentID.y.Equals(adjacentID.y));
         bool y = ((currentID.y + 1).Equals(adjacentID.y) || (currentID.y - 1).Equals(adjacentID.y)) && (currentID.x.Equals(adjacentID.x));
@@ -97,9 +90,10 @@ public class Slot : MonoBehaviour, IDropHandler
 
             currentTile.OverrideSorting = false;
             currentTile.SortingOrder = 0;
-
             return true;
         }
         else return false;
     }
+
+
 }

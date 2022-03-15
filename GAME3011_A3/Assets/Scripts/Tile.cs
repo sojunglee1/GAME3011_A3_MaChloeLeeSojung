@@ -54,7 +54,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
         selected = true;
         canvasGroup.blocksRaycasts = false;
-
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -96,5 +95,10 @@ public class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
                 animator.Play("MoveDown");
                 break;
         }
+    }
+
+    public void Fade()
+    {
+        animator.Play("Disappear");
     }
 }

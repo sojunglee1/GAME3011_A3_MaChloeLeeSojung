@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
-    [Range(8, 16)]
+    public static GameManager inst;
+
+    [Range(4, 8)]
     public int boardWidth, boardHeight;
 
     public GameObject gameBoard;
@@ -13,8 +16,7 @@ public class GameManager : MonoBehaviour
     public Slot slot;
     public List<Slot> slotList;
 
-    //public GameObject tile;
-    //public List<Tile> tileList;
+    private bool GameBoardCreated = false;
 
     [System.Obsolete]
     private void Start()
@@ -36,9 +38,82 @@ public class GameManager : MonoBehaviour
             {
                 Vector3 pos = new Vector3((centerX - (x - boardWidth / 2) * itemWidth), (centerY - (y - boardHeight / 2) * itemHeight), 0);
                 var newSlot = Instantiate(slot, pos, Quaternion.identity, gameBoard.transform);
-                newSlot.SetID(new Vector2(x, y));
+                newSlot.ID = new Vector2(x, y);
+                newSlot.CreateTile();
                 slotList.Add(newSlot.GetComponent<Slot>());
             }
         }
+
+        foreach (Slot slot in slotList)
+        {
+            CheckMatch(slot);
+        }
+    }
+
+    public void Print()
+    {
+        print("button press");
+    }
+
+
+    public void CheckMatch(Slot currentSlot)
+    {
+        //int tileMatch = 0;
+        //for (int i = 0; i < slotList.Count - 1; i++)
+        //{
+        //    if (slotList[i].tile.type.Equals(slotList[i + 1].tile.type))
+        //    {
+        //        tileMatch++;
+        //        print(slotList[i].tile.type + " + " + slotList[i + 1].tile.type);
+        //        slotList[i].tile.Fade();
+        //        slotList[i+1].tile.Fade();
+        //    }
+        //    else tileMatch = 0;
+
+        //    if (tileMatch > 2)
+        //    {
+        //        print("match!");
+        //    }
+        //}
+
+        Tile bottom = null, top = null, right = null, left = null;
+        foreach (Slot slot in slotList)
+        {
+            if (slot.ID.Equals(new Vector2(currentSlot.ID.x, currentSlot.ID.y - 1)) &&
+                slot.tile.type.Equals(currentSlot.tile.type))
+            {
+                bottom = slot.tile;
+            }
+            if (slot.ID.Equals(new Vector2(currentSlot.ID.x, currentSlot.ID.y + 1)) &&
+                slot.tile.type.Equals(currentSlot.tile.type))
+            {
+                top = slot.tile;
+            }
+
+            if (slot.ID.Equals(new Vector2(currentSlot.ID.x + 1, currentSlot.ID.y)) &&
+                slot.tile.type.Equals(currentSlot.tile.type))
+            {
+                right = slot.tile;
+            }
+            if (slot.ID.Equals(new Vector2(currentSlot.ID.x - 1, currentSlot.ID.y)) &&
+                slot.tile.type.Equals(currentSlot.tile.type))
+            {
+                left = slot.tile;
+            }
+        }
+        if (bottom != null & top != null)
+        {
+            bottom.Fade();
+            top.Fade();
+            currentSlot.tile.Fade();
+        }
+
+        if (right != null && left != null)
+        {
+            right.Fade();
+            left.Fade();
+            currentSlot.tile.Fade();
+        }
+
     }
 }

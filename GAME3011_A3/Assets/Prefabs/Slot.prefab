@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50e97bf8a90cc6949b01cd9bcd26c17d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 2984483414091046205, guid: efb4a6110b8146e44be100477917a3f7, type: 3}
+  tile: {fileID: 0}
   tileList:
   - {fileID: 2052314478578170310, guid: cbd4abc1afbc85249ade565b89575080, type: 3}
   - {fileID: 8304078222873043222, guid: 28ad6bc7c80746344b8f2ce517b223dd, type: 3}
