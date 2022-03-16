@@ -12,23 +12,21 @@ public class GameManager : MonoBehaviour
     public GameObject tile;
     public GameObject gameBoard;
 
-    private float tileX;
-    private Bounds bounds;
+    public GameObject[,] tiles;
 
     void Start()
     {
-        tileX = tile.GetComponent<BoxCollider2D>().offset.x;
+        tiles = new GameObject[boardWidth + 1, boardHeight + 1];
         float boundsX = tile.GetComponent<BoxCollider2D>().size.x;
         for (int x = 0; x <= boardWidth; x++)
         {
             for (int y = 0; y <= boardHeight; y++)
             {
-                Instantiate(tile, new Vector3(x - (float)boardWidth/2, y - (float)boardHeight/2, 0), Quaternion.identity, gameBoard.transform);
+                var newTile = Instantiate(tile, new Vector3(x - (float)boardWidth/2, y - (float)boardHeight/2, 0), Quaternion.identity, gameBoard.transform);
+                tiles[x, y] = newTile;
+
             }
-
         }
-
-        print(boardWidth / 2);
     }
 
     // Update is called once per frame

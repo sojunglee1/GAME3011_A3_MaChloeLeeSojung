@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 4474561850368802849}
   - component: {fileID: 5769437965023399635}
   - component: {fileID: -7817272057946881946}
+  - component: {fileID: 8333864480277894962}
   m_Layer: 0
-  m_Name: ball1
+  m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,3 +110,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.25, y: 1.25}
   m_EdgeRadius: 0
+--- !u!114 &8333864480277894962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7205928478808234266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2957f82e5161e940b445a17012f3f32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
+  possibleTiles:
+  - {fileID: 21300000, guid: af1a5a0fe0fa98c40827b6ec06676ac1, type: 3}
+  - {fileID: 21300000, guid: 31178a648b1d4e74aab31f1b12e993c2, type: 3}
+  - {fileID: 21300000, guid: 08b7274c33e7c334fa9bdfdb8f6656d5, type: 3}
+  - {fileID: 21300000, guid: 0c650e9a914ac1d4b814ff43b10a014a, type: 3}
+  - {fileID: 21300000, guid: aaccdc8df56f64345983e68352f3c6be, type: 3}
+  - {fileID: 21300000, guid: 8d9d26032c946d949a741e51ed74d475, type: 3}

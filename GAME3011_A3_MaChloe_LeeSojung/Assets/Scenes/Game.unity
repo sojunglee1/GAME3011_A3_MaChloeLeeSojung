@@ -238,6 +238,14 @@ MonoBehaviour:
   boardWidth: 8
   boardHeight: 8
   tile: {fileID: 7205928478808234266, guid: 6a006c660f125f845a2277b6c2e3bcd3, type: 3}
+  possibleTiles:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   gameBoard: {fileID: 2050111149}
 --- !u!4 &2050111151
 Transform:
