@@ -19,6 +19,8 @@ public class Slot : MonoBehaviour, IDropHandler
     private void Start()
     {
         Random.seed = Random.Range(0, 100);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, new Vector2(1, 0));
+        Debug.DrawLine(transform.position, new Vector2(10, 0));
     }
 
     public void CreateTile()
