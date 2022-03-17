@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,9 +30,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        
+    }
+
     public void FindMatch()
     {
-
         var hitData = Physics2D.Raycast(tiles[new Vector2(0,0)].topRay.origin, tiles[Vector2.zero].topRay.direction, 2.0f);
         var hitDataCollider = hitData.collider;
         if (hitData)
@@ -49,5 +54,7 @@ public class GameManager : MonoBehaviour
         }
         else print("didn't hit!");
     }
+
+
 
 }

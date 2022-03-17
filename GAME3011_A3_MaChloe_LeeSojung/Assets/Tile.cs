@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Tile : MonoBehaviour
+public class Tile : MonoBehaviour, IPointerDownHandler
 {
     public List<Sprite> possibleTiles;
     public Vector2 ID { get; set; }
@@ -15,6 +16,8 @@ public class Tile : MonoBehaviour
     public List<RaycastHit2D> rays;
 
     public Animator animator;
+
+    public bool Selected { get; set; }
 
     public Sprite sprite
     {
@@ -42,15 +45,6 @@ public class Tile : MonoBehaviour
         CheckAdjacentTiles(topRay);
         //CheckAdjacentTiles(leftRay);
         CheckAdjacentTiles(rightRay);
-
-        //if (MatchTiles(bottomRay) && MatchTiles(topRay))
-        //{
-        //    print("matched 3");
-        //}
-        //else if (MatchTiles(leftRay) && MatchTiles(rightRay))
-        //{
-        //    print("matched 3");
-        //}
     }
 
     public void CheckAdjacentTiles(Ray2D ray)
@@ -69,20 +63,6 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public bool MatchTiles(Ray2D ray)
-    {
-        bool matched = false;
-        var hitData = Physics2D.Raycast(ray.origin, ray.direction, 1.0f);
-        if (hitData)
-        {
-            if (hitData.collider.gameObject.GetComponent<Tile>().sprite.Equals(this.sprite))
-                matched = true;
-            else matched = false;
-        }
-
-        return matched;
-    }
-
     public void DrawTile()
     {
         sprite = possibleTiles[Random.Range(0, possibleTiles.Count)];
@@ -94,5 +74,19 @@ public class Tile : MonoBehaviour
         Debug.DrawRay(bottomRay.origin, bottomRay.direction, Color.green);
         Debug.DrawRay(leftRay.origin, leftRay.direction, Color.green);
         Debug.DrawRay(rightRay.origin, rightRay.direction, Color.green);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        Selected = !Selected;
+
+        if (Selected)
+        {
+            animator.Play("Selected");
+        }
+        else
+        {
+            animator.Play("Default");
+        }
     }
 }
