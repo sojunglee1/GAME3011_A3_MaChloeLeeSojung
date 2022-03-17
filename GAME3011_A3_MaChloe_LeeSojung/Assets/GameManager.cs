@@ -30,9 +30,55 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Update()
+    private void Update()
     {
-        
+        SwitchTiles();
+    }
+
+    public void SwitchTiles()
+    {
+        List<Tile> selectedTiles = new List<Tile>(2);
+        for(int x = -4; x <= 4; x++)
+        {
+            for (int y = -4; y <= 4; y++)
+            {
+                if (tiles[new Vector2(x, y)].Selected && selectedTiles.Count < 2)
+                {
+                    selectedTiles.Add(tiles[new Vector2(x, y)]);
+                }
+
+                if (selectedTiles.Count > 2)
+                {
+                    selectedTiles.Clear();
+                    foreach (Tile tile in selectedTiles)
+                    {
+                        tile.Selected = false;
+                    }
+                    return;
+                }
+            }
+        }
+
+        if (selectedTiles.Count.Equals(2))
+        {
+            var tile1 = selectedTiles[0];
+            var tile2 = selectedTiles[1];
+
+            if (tile1.Selected && tile2.Selected)
+            {
+                var tile1Pos = tile1.transform.position;
+                var tile2Pos = tile2.transform.position;
+
+                tile1.transform.position = tile2Pos;
+                tile2.transform.position = tile1Pos;
+
+                tile1.Selected = false;
+                tile2.Selected = false;
+
+                tile1.ID = new Vector2(tile1.transform.position.x, tile1.transform.position.y);
+                tile2.ID = new Vector2(tile2.transform.position.x, tile2.transform.position.y);
+            }
+        }
     }
 
     public void FindMatch()

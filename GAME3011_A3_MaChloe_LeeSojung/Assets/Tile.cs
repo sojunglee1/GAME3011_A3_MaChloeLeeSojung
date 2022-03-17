@@ -28,15 +28,26 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     private void Start()
     {
         animator = GetComponent<Animator>();
-        topRay = new Ray2D(transform.position, Vector3.up);
-        bottomRay = new Ray2D(transform.position, -Vector3.up);
-        leftRay = new Ray2D(transform.position, -Vector3.right);
-        rightRay = new Ray2D(transform.position, Vector3.right);
+
     }
 
     private void Update()
     {
+        topRay = new Ray2D(transform.position, Vector3.up);
+        bottomRay = new Ray2D(transform.position, -Vector3.up);
+        leftRay = new Ray2D(transform.position, -Vector3.right);
+        rightRay = new Ray2D(transform.position, Vector3.right);
+
         Matched();
+
+        if (Selected)
+        {
+            PlayAnimation("Selected");
+        }
+        else
+        {
+            PlayAnimation("Default");
+        }
     }
 
     public void Matched()
@@ -49,6 +60,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler
 
     public void CheckAdjacentTiles(Ray2D ray)
     {
+        List<GameObject> matched = new List<GameObject>();
         var hitData = Physics2D.Raycast(ray.origin, ray.direction, 1.0f);
         var hitData2 = Physics2D.Raycast(ray.origin, -ray.direction, 1.0f);
         if (hitData && hitData2)
@@ -56,10 +68,19 @@ public class Tile : MonoBehaviour, IPointerDownHandler
             if (hitData.collider.gameObject.GetComponent<Tile>().sprite.Equals(this.sprite) &&
                 hitData2.collider.gameObject.GetComponent<Tile>().sprite.Equals(this.sprite))
             {
-                animator.Play("Fade");
-                hitData.collider.gameObject.GetComponent<Tile>().animator.Play("Fade");
-                hitData2.collider.gameObject.GetComponent<Tile>().animator.Play("Fade");
+                matched.Add(gameObject);
+                matched.Add(hitData.collider.gameObject);
+                matched.Add(hitData2.collider.gameObject);
+
+                //gameObject.SetActive(false);
+                //hitData.collider.gameObject.SetActive(false);
+                //hitData2.collider.gameObject.SetActive(false);
             }
+        }
+
+        foreach(GameObject obj in matched)
+        {
+            obj.SetActive(false);
         }
     }
 
@@ -79,14 +100,13 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
         Selected = !Selected;
+    }
 
-        if (Selected)
+    public void PlayAnimation(string animationName)
+    {
+        if (this.gameObject.activeInHierarchy != false)
         {
-            animator.Play("Selected");
-        }
-        else
-        {
-            animator.Play("Default");
+            animator.Play(animationName);
         }
     }
 }
