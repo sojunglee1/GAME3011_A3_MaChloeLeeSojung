@@ -143,7 +143,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     {
         List<GameObject> matchingTiles = new List<GameObject>();
         for (int i = 0; i < rays.Count; i++) { matchingTiles.AddRange(FindMatch(rays[i])); }
-        if (matchingTiles.Count >= (int)GameManager.inst.level)
+        if (matchingTiles.Count >= (int)GameManager.inst.level - 1)
         {
             for (int i = 0; i < matchingTiles.Count; i++)
             {
