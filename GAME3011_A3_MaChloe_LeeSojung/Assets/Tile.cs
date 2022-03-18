@@ -142,13 +142,18 @@ public class Tile : MonoBehaviour, IPointerDownHandler
                 if (GetAllAdjacentTiles().Contains(previousSelected.gameObject))
                 {
                     SwitchTiles(previousSelected);
+                    previousSelected.ClearAllMatches();
                     previousSelected.DeSelected();
+                    ClearAllMatches();
                 }
-
+                else
+                {
+                    previousSelected.GetComponent<Tile>().DeSelected();
+                    Selected();
+                }
             }
         }
     }
-
 
     public void SwitchTiles(Tile previousTile)
     {
@@ -177,6 +182,46 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         return adjacentTiles;
     }
 
+    private List<GameObject> FindMatch(Vector2 castDir)
+    {
+        List<GameObject> matchingTiles = new List<GameObject>();
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, castDir);
+        while (hit.collider != null && hit.collider.GetComponent<SpriteRenderer>().sprite == this.sprite)
+        {
+            matchingTiles.Add(hit.collider.gameObject);
+            hit = Physics2D.Raycast(hit.collider.transform.position, castDir);
+        }
+        return matchingTiles;
+    }
+
+    private void ClearMatch(Vector2[] paths)
+    {
+        List<GameObject> matchingTiles = new List<GameObject>();
+        for (int i = 0; i < paths.Length; i++) { matchingTiles.AddRange(FindMatch(paths[i])); }
+        if (matchingTiles.Count >= 2)
+        {
+            for (int i = 0; i < matchingTiles.Count; i++)
+            {
+                matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
+            }
+            matchFound = true;
+        }
+    }
+
+    private bool matchFound = false;
+    public void ClearAllMatches()
+    {
+        if (sprite == null)
+            return;
+
+        ClearMatch(new Vector2[2] { Vector2.left, Vector2.right });
+        ClearMatch(new Vector2[2] { Vector2.up, Vector2.down });
+        if (matchFound)
+        {
+            sprite = null;
+            matchFound = false;
+        }
+    }
 
     public void PlayAnimation(string animationName)
     {
