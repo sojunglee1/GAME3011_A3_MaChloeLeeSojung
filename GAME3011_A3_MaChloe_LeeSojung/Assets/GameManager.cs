@@ -3,8 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public enum DifficultyLevel
+{
+    Easy = 3,
+    Medium = 4,
+    Hard = 5 
+}
+
 public class GameManager : MonoBehaviour
 {
+    public static GameManager inst;
+
     [Range(2, 16)]
     public int boardWidth;
     [Range(2, 16)]
@@ -13,6 +22,13 @@ public class GameManager : MonoBehaviour
     public Tile tile;
     public GameObject gameBoard;
     public Dictionary<Vector2, Tile> tiles;
+
+    public DifficultyLevel level;
+
+    private void Awake()
+    {
+        inst = this;
+    }
 
     void Start()
     {
@@ -28,5 +44,10 @@ public class GameManager : MonoBehaviour
                 tiles[newTile.ID] = newTile;
             }
         }
+    }
+
+    private void Update()
+    {
+
     }
 }

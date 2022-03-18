@@ -8,11 +8,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     public List<Sprite> possibleTiles;
     public Vector2 ID { get; set; }
 
-    public Ray2D topRay { get; set; }
-    public Ray2D bottomRay { get; set; }
-    public Ray2D leftRay { get; set; }
-    public Ray2D rightRay { get; set; }
-
     public List<Ray2D> allRays;
 
     public List<RaycastHit2D> rays;
@@ -29,71 +24,14 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     }
 
     private void Start()
-    { 
-        topRay = new Ray2D(transform.position, Vector3.up);
-        bottomRay = new Ray2D(transform.position, -Vector3.up);
-        leftRay = new Ray2D(transform.position, -Vector3.right);
-        rightRay = new Ray2D(transform.position, Vector3.right);
-
-        allRays = new List<Ray2D> { topRay, bottomRay, leftRay, rightRay };
-    }
-
-    public void Matched()
     {
-        CheckAdjacentTiles(leftRay);
-        CheckAdjacentTiles(bottomRay);
-        CheckAdjacentTiles(topRay);
-        CheckAdjacentTiles(rightRay);
-    }
-
-    public List<GameObject> matched = new List<GameObject>();
-    public void CheckAdjacentTiles(Ray2D ray)
-    {
-        var hitData = Physics2D.Raycast(ray.origin, ray.direction, 1.0f);
-        if (hitData)
+        allRays = new List<Ray2D> 
         {
-            if (hitData.collider.gameObject.GetComponent<Tile>().sprite.Equals(this.sprite) && !matched.Contains(hitData.collider.gameObject))
-            {
-                matched.Add(hitData.collider.gameObject);
-            }
-        }
-
-        if (matched.Count >= 2)
-        {
-            foreach (GameObject obj in matched)
-            {
-                print(obj.GetComponent<Tile>().ID);
-                obj.SetActive(false);
-                Destroy(obj);
-                matched.Remove(obj);
-            }
-            matched.Clear();
-        }
-
-        //List<GameObject> matched = new List<GameObject>();
-        //var hitData = Physics2D.Raycast(ray.origin, ray.direction, 1.0f);
-        //var hitData2 = Physics2D.Raycast(ray.origin, -ray.direction, 1.0f);
-        //if (hitData && hitData2)
-        //{
-        //    if (hitData.collider.gameObject.GetComponent<Tile>().sprite.Equals(this.sprite) &&
-        //        hitData2.collider.gameObject.GetComponent<Tile>().sprite.Equals(this.sprite))
-        //    {
-        //        matched.Add(gameObject);
-        //        matched.Add(hitData.collider.gameObject);
-        //        matched.Add(hitData2.collider.gameObject);
-        //    }
-        //}
-
-        //if (matched.Count > 2)
-        //{
-        //    foreach (GameObject obj in matched)
-        //    {
-        //        print(obj.GetComponent<Tile>().ID);
-        //        obj.SetActive(false);
-        //        Destroy(obj);
-        //    }
-        //    matched.Clear();
-        //}
+            new Ray2D(transform.position, Vector3.up), 
+            new Ray2D(transform.position, Vector3.down), 
+            new Ray2D(transform.position, Vector3.left), 
+            new Ray2D(transform.position, Vector3.right), 
+        };
     }
 
     public void DrawTile()
@@ -103,10 +41,10 @@ public class Tile : MonoBehaviour, IPointerDownHandler
 
     public void OnDrawGizmos()
     {
-        Debug.DrawRay(topRay.origin, topRay.direction, Color.green);
-        Debug.DrawRay(bottomRay.origin, bottomRay.direction, Color.green);
-        Debug.DrawRay(leftRay.origin, leftRay.direction, Color.green);
-        Debug.DrawRay(rightRay.origin, rightRay.direction, Color.green);
+        foreach(Ray2D ray in allRays)
+        {
+            Debug.DrawRay(ray.origin, ray.direction, Color.red);
+        }
     }
 
     public void Selected()
@@ -123,6 +61,11 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         selectedTiles.Remove(this);
         previousSelected = null;
         this.PlayAnimation("Default");
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -145,6 +88,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler
                     previousSelected.ClearAllMatches();
                     previousSelected.DeSelected();
                     ClearAllMatches();
+                    StartCoroutine(UpdateTiles());
                 }
                 else
                 {
@@ -182,27 +126,29 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         return adjacentTiles;
     }
 
-    private List<GameObject> FindMatch(Vector2 castDir)
+    private List<GameObject> FindMatch(Ray2D ray)
     {
         List<GameObject> matchingTiles = new List<GameObject>();
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, castDir);
-        while (hit.collider != null && hit.collider.GetComponent<SpriteRenderer>().sprite == this.sprite)
+        var hitData = Physics2D.Raycast(transform.position, ray.direction);
+        while (hitData.collider != null && hitData.collider.GetComponent<SpriteRenderer>().sprite == sprite)
         {
-            matchingTiles.Add(hit.collider.gameObject);
-            hit = Physics2D.Raycast(hit.collider.transform.position, castDir);
+            matchingTiles.Add(hitData.collider.gameObject);
+            hitData = Physics2D.Raycast(hitData.collider.transform.position, ray.direction);
         }
         return matchingTiles;
     }
 
-    private void ClearMatch(Vector2[] paths)
+    public List<Tile> emptyTiles;
+    private void ClearMatch(List<Ray2D> rays)
     {
         List<GameObject> matchingTiles = new List<GameObject>();
-        for (int i = 0; i < paths.Length; i++) { matchingTiles.AddRange(FindMatch(paths[i])); }
-        if (matchingTiles.Count >= 2)
+        for (int i = 0; i < rays.Count; i++) { matchingTiles.AddRange(FindMatch(rays[i])); }
+        if (matchingTiles.Count >= (int)GameManager.inst.level)
         {
             for (int i = 0; i < matchingTiles.Count; i++)
             {
                 matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
+                emptyTiles.Add(matchingTiles[i].GetComponent<Tile>());
             }
             matchFound = true;
         }
@@ -214,8 +160,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         if (sprite == null)
             return;
 
-        ClearMatch(new Vector2[2] { Vector2.left, Vector2.right });
-        ClearMatch(new Vector2[2] { Vector2.up, Vector2.down });
+        ClearMatch(new List<Ray2D> { allRays[0], allRays[1] });
+        ClearMatch(new List<Ray2D> { allRays[2], allRays[3] });
+
         if (matchFound)
         {
             sprite = null;
@@ -231,13 +178,30 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    IEnumerator UpdateTiles()
+    {
+        yield return new WaitForSeconds(1f);
+        MoveTilesDown();
+    }
+
     public void MoveTilesDown()
     {
-        var hitData = Physics2D.Raycast(bottomRay.origin, bottomRay.direction, 1.0f);
-
-        if (!hitData && transform.position.y != -4)
+        foreach (Tile tile in emptyTiles)
         {
-            transform.position -= Vector3.up;
+            if (tile.sprite == null)
+            {
+                tile.DrawTile();
+                this.DrawTile();
+            }
         }
+
+        //var hitData = Physics2D.Raycast(transform.position, Vector3.down, 1.0f);
+        //if (hitData)
+        //{
+        //    if (hitData.collider.GetComponent<SpriteRenderer>().sprite == null && transform.position.y >= -GameManager.inst.boardHeight / 2)
+        //    {
+        //        transform.position += Vector3.down;
+        //    }
+        //}
     }
 }

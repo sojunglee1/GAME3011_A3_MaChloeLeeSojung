@@ -322,6 +322,7 @@ MonoBehaviour:
   boardHeight: 8
   tile: {fileID: 8333864480277894962, guid: 6a006c660f125f845a2277b6c2e3bcd3, type: 3}
   gameBoard: {fileID: 2050111149}
+  level: 3
 --- !u!4 &2050111151
 Transform:
   m_ObjectHideFlags: 0
