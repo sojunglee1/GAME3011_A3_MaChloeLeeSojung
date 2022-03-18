@@ -30,11 +30,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
-    {
-        SwitchTiles();
-    }
-
     public void SwitchTiles()
     {
         List<Tile> selectedTiles = new List<Tile>(2);
@@ -42,7 +37,7 @@ public class GameManager : MonoBehaviour
         {
             for (int y = -boardWidth / 2; y <= boardWidth / 2; y++)
             {
-                if (tiles[new Vector2(x, y)].Selected && selectedTiles.Count < 2)
+                if (tiles[new Vector2(x, y)].isSelected && selectedTiles.Count < 2)
                 {
                     selectedTiles.Add(tiles[new Vector2(x, y)]);
                 }
@@ -52,7 +47,7 @@ public class GameManager : MonoBehaviour
                     selectedTiles.Clear();
                     foreach (Tile tile in selectedTiles)
                     {
-                        tile.Selected = false;
+                        tile.isSelected = false;
                     }
                     return;
                 }
@@ -64,7 +59,7 @@ public class GameManager : MonoBehaviour
             var tile1 = selectedTiles[0];
             var tile2 = selectedTiles[1];
 
-            if (tile1.Selected && tile2.Selected)
+            if (tile1.isSelected && tile2.isSelected)
             {
                 var tile1Pos = tile1.transform.position;
                 var tile2Pos = tile2.transform.position;
@@ -72,8 +67,8 @@ public class GameManager : MonoBehaviour
                 tile1.transform.position = tile2Pos;
                 tile2.transform.position = tile1Pos;
 
-                tile1.Selected = false;
-                tile2.Selected = false;
+                tile1.isSelected = false;
+                tile2.isSelected = false;
 
                 tile1.ID = new Vector2(tile1.transform.position.x, tile1.transform.position.y);
                 tile2.ID = new Vector2(tile2.transform.position.x, tile2.transform.position.y);
