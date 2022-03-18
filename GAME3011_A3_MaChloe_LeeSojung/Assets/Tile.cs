@@ -63,11 +63,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         this.PlayAnimation("Default");
     }
 
-    private void Update()
-    {
-        
-    }
-
     public void OnPointerDown(PointerEventData eventData)
     {
         if (isSelected)
@@ -88,7 +83,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler
                     previousSelected.ClearAllMatches();
                     previousSelected.DeSelected();
                     ClearAllMatches();
-                    StartCoroutine(UpdateTiles());
                 }
                 else
                 {
@@ -168,6 +162,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler
             sprite = null;
             matchFound = false;
         }
+        StartCoroutine(UpdateTiles());
     }
 
     public void PlayAnimation(string animationName)
@@ -180,28 +175,14 @@ public class Tile : MonoBehaviour, IPointerDownHandler
 
     IEnumerator UpdateTiles()
     {
-        yield return new WaitForSeconds(1f);
-        MoveTilesDown();
-    }
-
-    public void MoveTilesDown()
-    {
+        yield return new WaitForSeconds(0.5f);
         foreach (Tile tile in emptyTiles)
         {
             if (tile.sprite == null)
             {
+                DrawTile();
                 tile.DrawTile();
-                this.DrawTile();
             }
         }
-
-        //var hitData = Physics2D.Raycast(transform.position, Vector3.down, 1.0f);
-        //if (hitData)
-        //{
-        //    if (hitData.collider.GetComponent<SpriteRenderer>().sprite == null && transform.position.y >= -GameManager.inst.boardHeight / 2)
-        //    {
-        //        transform.position += Vector3.down;
-        //    }
-        //}
     }
 }
