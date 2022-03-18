@@ -14,9 +14,6 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     public Ray2D rightRay { get; set; }
 
     public List<RaycastHit2D> rays;
-
-    public Animator animator;
-
     public bool Selected { get; set; }
 
     public Sprite sprite
@@ -25,20 +22,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         set { GetComponent<SpriteRenderer>().sprite = value; }
     }
 
-    private void Start()
-    {
-        animator = GetComponent<Animator>();
-
-    }
-
     private void Update()
-    {
+    { 
         topRay = new Ray2D(transform.position, Vector3.up);
         bottomRay = new Ray2D(transform.position, -Vector3.up);
         leftRay = new Ray2D(transform.position, -Vector3.right);
         rightRay = new Ray2D(transform.position, Vector3.right);
-
-        Matched();
 
         if (Selected)
         {
@@ -48,13 +37,16 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         {
             PlayAnimation("Default");
         }
+
+        Matched();
+        MoveTilesDown();
     }
 
     public void Matched()
     {
+        //CheckAdjacentTiles(leftRay);
         //CheckAdjacentTiles(bottomRay);
         CheckAdjacentTiles(topRay);
-        //CheckAdjacentTiles(leftRay);
         CheckAdjacentTiles(rightRay);
     }
 
@@ -71,16 +63,18 @@ public class Tile : MonoBehaviour, IPointerDownHandler
                 matched.Add(gameObject);
                 matched.Add(hitData.collider.gameObject);
                 matched.Add(hitData2.collider.gameObject);
-
-                //gameObject.SetActive(false);
-                //hitData.collider.gameObject.SetActive(false);
-                //hitData2.collider.gameObject.SetActive(false);
             }
         }
-
-        foreach(GameObject obj in matched)
+        
+        if (matched.Count > 2)
         {
-            obj.SetActive(false);
+            foreach (GameObject obj in matched)
+            {
+                print(obj.GetComponent<Tile>().ID);
+                obj.SetActive(false);
+                Destroy(obj);
+            }
+            matched.Clear();
         }
     }
 
@@ -106,7 +100,17 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     {
         if (this.gameObject.activeInHierarchy != false)
         {
-            animator.Play(animationName);
+            GetComponent<Animator>().Play(animationName);
+        }
+    }
+
+    public void MoveTilesDown()
+    {
+        var hitData = Physics2D.Raycast(bottomRay.origin, bottomRay.direction, 1.0f);
+
+        if (!hitData && transform.position.y != -4)
+        {
+            transform.position -= Vector3.up;
         }
     }
 }

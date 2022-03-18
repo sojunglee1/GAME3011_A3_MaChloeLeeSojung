@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         SwitchTiles();
     }
@@ -38,9 +38,9 @@ public class GameManager : MonoBehaviour
     public void SwitchTiles()
     {
         List<Tile> selectedTiles = new List<Tile>(2);
-        for(int x = -4; x <= 4; x++)
+        for(int x = -boardHeight / 2; x <= boardHeight / 2; x++)
         {
-            for (int y = -4; y <= 4; y++)
+            for (int y = -boardWidth / 2; y <= boardWidth / 2; y++)
             {
                 if (tiles[new Vector2(x, y)].Selected && selectedTiles.Count < 2)
                 {
@@ -80,27 +80,4 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    public void FindMatch()
-    {
-        var hitData = Physics2D.Raycast(tiles[new Vector2(0,0)].topRay.origin, tiles[Vector2.zero].topRay.direction, 2.0f);
-        var hitDataCollider = hitData.collider;
-        if (hitData)
-        {
-            print(hitData.transform.position);
-            if (tiles[Vector2.zero].sprite.Equals(hitDataCollider.GetComponent<Tile>().sprite))
-            {
-                print("match!");
-                print(hitData.collider.gameObject.GetComponent<Tile>().ID);
-            }
-            else
-            {
-                print("no match!");
-            }
-        }
-        else print("didn't hit!");
-    }
-
-
-
 }
