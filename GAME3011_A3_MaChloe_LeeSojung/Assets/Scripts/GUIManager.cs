@@ -43,7 +43,6 @@ public class GUIManager : MonoBehaviour
                 StartCoroutine(LoadGame(fadeAnimator.GetCurrentAnimatorClipInfo(0).Length, sceneName));
                 break;
         }
-
     }
 
     IEnumerator LoadGame(float time, string sceneName)

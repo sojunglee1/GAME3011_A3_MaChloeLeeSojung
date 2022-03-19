@@ -52,7 +52,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         isSelected = true;
         selectedTiles.Add(this);
         previousSelected = gameObject.GetComponent<Tile>();
-        this.PlayAnimation("Selected");
+        this.PlayAnimation("Fade");
     }
 
     public void DeSelected()

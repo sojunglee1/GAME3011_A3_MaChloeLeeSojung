@@ -87,6 +87,8 @@ public class GameManager : MonoBehaviour
                 tiles[newTile.ID] = newTile;
             }
         }
+
+        gameBoard.GetComponent<Animator>().Play("Start Animation");
     }
 
     public void Countdown()
