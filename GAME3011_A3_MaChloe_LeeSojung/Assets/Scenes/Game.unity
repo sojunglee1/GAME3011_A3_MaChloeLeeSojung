@@ -1745,6 +1745,7 @@ MonoBehaviour:
   fadeAnimator: {fileID: 954229911}
   scoreText: {fileID: 1323892634}
   timeLeftText: {fileID: 1453937187}
+  statsPanel: {fileID: 1736606981}
   resultsPanel: {fileID: 263738293}
   resultsScoreText: {fileID: 478142192}
 --- !u!1 &950139962
