@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public enum Candy{
+    Normal,
+    Powerup
+}
 public class Tile : MonoBehaviour, IPointerDownHandler
 {
     public List<Sprite> possibleTiles;
@@ -16,7 +20,9 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     private static Tile previousSelected = null;
 
     public List<Tile> selectedTiles;
-
+    [SerializeField] private SoundManager audio;
+    [SerializeField] private AudioClip audClip;
+    public Candy type;
     public Sprite sprite
     {
         get { return GetComponent<SpriteRenderer>().sprite; }
@@ -36,7 +42,29 @@ public class Tile : MonoBehaviour, IPointerDownHandler
 
     public void DrawTile()
     {
-        sprite = possibleTiles[Random.Range(0, possibleTiles.Count)];
+        type = Random.value < .5 ? Candy.Normal : Candy.Powerup;
+        if (GameManager.powerUpCount >= GameManager.totalPowerUp)
+        {
+            type = Candy.Normal;
+        }
+           
+        //Debug.Log(string.Format("{0}={1}", Random.value, type));
+        //sprite = possibleTiles[Random.Range(0, possibleTiles.Count)];
+        switch (type)
+        {
+            case Candy.Powerup:
+                if (GameManager.powerUpCount <= GameManager.totalPowerUp)
+                {
+                    sprite = possibleTiles[6];
+                    GameManager.powerUpCount++;
+                }
+                break;
+            case Candy.Normal:
+                sprite = possibleTiles[Random.Range(0, 5)];
+                break;
+        }
+
+
     }
 
     public void OnDrawGizmos()
@@ -126,6 +154,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler
         var hitData = Physics2D.Raycast(transform.position, ray.direction);
         while (hitData.collider != null && hitData.collider.GetComponent<SpriteRenderer>().sprite == sprite)
         {
+
             matchingTiles.Add(hitData.collider.gameObject);
             hitData = Physics2D.Raycast(hitData.collider.transform.position, ray.direction);
         }
@@ -135,17 +164,26 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     public List<Tile> emptyTiles;
     private void ClearMatch(List<Ray2D> rays)
     {
+        Tile localTile;
         List<GameObject> matchingTiles = new List<GameObject>();
         for (int i = 0; i < rays.Count; i++) { matchingTiles.AddRange(FindMatch(rays[i])); }
         if (matchingTiles.Count >= (int)GameManager.inst.level - 1)
         {
             for (int i = 0; i < matchingTiles.Count; i++)
             {
-                matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
+                localTile = matchingTiles[i].GetComponent<Tile>();
+                  matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
                 emptyTiles.Add(matchingTiles[i].GetComponent<Tile>());
+                
                 GameManager.inst.score += 50;
+                if(localTile.type == Candy.Powerup)
+                {
+                    GameManager.inst.score += 100;
+                }
             }
             matchFound = true;
+            Debug.Log(matchFound);
+            audio.MatchFound(audClip);
         }
         matchingTiles.Clear();
     }
@@ -155,7 +193,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     {
         if (sprite == null)
             return;
-
+     
         ClearMatch(new List<Ray2D> { allRays[0], allRays[1] });
         ClearMatch(new List<Ray2D> { allRays[2], allRays[3] });
 
@@ -181,8 +219,16 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     {
         yield return new WaitForSeconds(0.5f);
 
-        foreach (Tile tile in emptyTiles)
+       
+            foreach (Tile tile in emptyTiles)
         {
+            //Debug.Log(tile.type);
+            if (tile.type == Candy.Powerup)
+            {
+                if(GameManager.powerUpCount > 0)
+                GameManager.powerUpCount--;
+                //Debug.Log(GameManager.powerUpCount);
+            }
             if (tile.sprite == null)
             {
                 DrawTile();
