@@ -20,7 +20,7 @@ public class GUIManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Game")
         {
             scoreText.text = $"Score: \n{GameManager.inst.score}";
-            timeLeftText.text = $"Score: \n{(int)GameManager.inst.timeLeft}";
+            timeLeftText.text = $"Time: \n{(int)GameManager.inst.timeLeft}";
 
             if ((int)GameManager.inst.timeLeft <= 0)
             {

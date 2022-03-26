@@ -20,8 +20,7 @@ public class Tile : MonoBehaviour, IPointerDownHandler
     private static Tile previousSelected = null;
 
     public List<Tile> selectedTiles;
-    [SerializeField] private SoundManager audio;
-    [SerializeField] private AudioClip audClip;
+    [SerializeField] private AudioSource audio;
     public Candy type;
     public Sprite sprite
     {
@@ -31,6 +30,8 @@ public class Tile : MonoBehaviour, IPointerDownHandler
 
     private void Start()
     {
+
+        audio = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioSource>();
         allRays = new List<Ray2D> 
         {
             new Ray2D(transform.position, Vector3.up), 
@@ -179,11 +180,12 @@ public class Tile : MonoBehaviour, IPointerDownHandler
                 if(localTile.type == Candy.Powerup)
                 {
                     GameManager.inst.score += 100;
+                    audio.Play();
                 }
             }
             matchFound = true;
             Debug.Log(matchFound);
-            audio.MatchFound(audClip);
+            
         }
         matchingTiles.Clear();
     }

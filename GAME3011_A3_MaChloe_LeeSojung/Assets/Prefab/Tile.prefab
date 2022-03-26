@@ -132,8 +132,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8d9d26032c946d949a741e51ed74d475, type: 3}
   - {fileID: 21300000, guid: 68395d3a435c748479679629a5bc7967, type: 3}
   selectedTiles: []
-  audio: {fileID: 227799589151796250, guid: 74f27ada1b4bd1940869ce0aa68c821e, type: 3}
-  audClip: {fileID: 8300000, guid: 0cda33fa8608e7340b2a433d0a7a68db, type: 3}
+  audio: {fileID: 0}
   type: 0
   emptyTiles: []
 --- !u!95 &5246717543957278908
